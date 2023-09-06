@@ -70,8 +70,8 @@ namespace FTS_receiver_
                         string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
 
                         string filePath = System.IO.Path.Combine(savePath, fileName);
-
-                        using (FileStream fileStream = File.Create(filePath))
+                        string filePath2 = new string(filePath.Where(c => !System.IO.Path.GetInvalidFileNameChars().Contains(c)).ToArray());
+                        using (FileStream fileStream = File.Create(filePath2))
                         {
                             byte[] buffer = new byte[1024];
                             int bytesRead;
