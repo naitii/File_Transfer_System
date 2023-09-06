@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTS_sender_"
         mc:Ignorable="d"
+        ResizeMode="CanMinimize"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="emailBox" HorizontalAlignment="Left" Height="27" Margin="220,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" FontSize="16"/>
-        <Label x:Name="label1" Content="Enter Your Institute ID" HorizontalAlignment="Left" Height="38" Margin="284,91,0,0" VerticalAlignment="Top" Width="202" FontFamily="Arial" FontSize="16" FontWeight="Bold"/>
-        <Button x:Name="login" Content="LOGIN" HorizontalAlignment="Left" Height="32" Margin="323,250,0,0" VerticalAlignment="Top" Width="121" FontWeight="Bold" Click="login_Click"/>
-       
-        <Button x:Name="browse" Content="Select Files to Send" HorizontalAlignment="Left" Height="28" Margin="515,143,0,0" VerticalAlignment="Top" Width="173" FontFamily="Arial" FontSize="16" Click="browse_Click"/>
-        <TextBox x:Name="path" HorizontalAlignment="Left" Height="28" Margin="91,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" FontFamily="Arial" FontSize="14"/>
-        <Button x:Name="Transfer" Content="SEND FILES" HorizontalAlignment="Left" Height="31" Margin="250,262,0,0" VerticalAlignment="Top" Width="217" Click="search_Click"/>
-        <TextBox x:Name="ipAddress" HorizontalAlignment="Left" Height="24" Margin="207,63,0,0" TextWrapping="Wrap" Text="Write IP Address of Receiver" VerticalAlignment="Top" Width="193"/>
-        <TextBlock x:Name="ProgressTextBlock" HorizontalAlignment="Left" Height="26" Margin="66,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238"/>
-        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="20" Margin="59,343,0,0" VerticalAlignment="Top" Width="629"/>
+        <TextBox x:Name="emailBox" HorizontalAlignment="Left" Height="27" Margin="220,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" FontSize="16" RenderTransformOrigin="1,0.5"/>
+        <Label x:Name="label1" Content="Enter Your Institute ID" HorizontalAlignment="Left" Height="38" Margin="284,91,0,0" VerticalAlignment="Top" Width="202" FontFamily="Arial" FontSize="16" FontWeight="Bold" RenderTransformOrigin="1,0.5"/>
+        <Button x:Name="login" Content="LOGIN" HorizontalAlignment="Left" Height="32" Margin="323,250,0,0" VerticalAlignment="Top" Width="121" Click="login_Click" RenderTransformOrigin="1,0.5" FontFamily="Arial" FontWeight="Bold" FontSize="14"/>
+
+        <Button x:Name="browse" Content="Select Files to Send" HorizontalAlignment="Left" Height="28" Margin="515,143,0,0" VerticalAlignment="Top" Width="173" FontFamily="Arial" FontSize="16" Click="browse_Click" RenderTransformOrigin="1,0.5"/>
+        <TextBox x:Name="path" HorizontalAlignment="Left" Height="28" Margin="91,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" FontFamily="Arial" FontSize="14" RenderTransformOrigin="1,0.5"/>
+        <Button x:Name="Transfer" Content="SEND FILES" HorizontalAlignment="Left" Height="31" Margin="284,266,0,0" VerticalAlignment="Top" Width="183" Click="search_Click" RenderTransformOrigin="1,0.5" FontFamily="Arial" FontWeight="Bold" FontSize="14"/>
+        <TextBox x:Name="ipAddress" HorizontalAlignment="Left" Height="24" Margin="207,63,0,0" TextWrapping="Wrap" Text="Write IP Address of Receiver" VerticalAlignment="Top" Width="193" MouseLeftButtonDown="ipAddress_MouseLeftButtonDown" MouseDoubleClick="ipAddress_MouseDoubleClick" RenderTransformOrigin="1,0.5" FontFamily="Arial" FontSize="14" FontStyle="Italic"/>
+        <TextBlock x:Name="ProgressTextBlock" HorizontalAlignment="Left" Height="26" Margin="66,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" RenderTransformOrigin="1,0.5"/>
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="20" Margin="59,343,0,0" VerticalAlignment="Top" Width="629" RenderTransformOrigin="1,0.5"/>
     </Grid>
 </Window>
