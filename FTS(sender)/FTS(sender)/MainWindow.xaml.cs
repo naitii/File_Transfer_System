@@ -45,14 +45,14 @@ namespace FTS_sender_
             path.Visibility = (Visibility)0x64;
             ProgressBar.Visibility = (Visibility)0x64;
             ProgressTextBlock.Visibility = (Visibility)0x64;
-            
+
             ipAddress.Visibility = (Visibility)0x64;
         }
 
         private async void search_Click(object sender, RoutedEventArgs e)
         {
             serverIp = ipAddress.Text;
-            
+
             using (TcpClient client = new TcpClient())
             {
                 try
@@ -64,61 +64,58 @@ namespace FTS_sender_
                 catch
                 {
                     System.Windows.Forms.MessageBox.Show("Couldn't Connect to the Server ");
-                    
+
 
                 }
                 try
                 {
 
                     using (NetworkStream stream = client.GetStream())
+                    {
+                        filePath += path.Text;
+                        try
                         {
-                            filePath += path.Text;
-                            try
+                            string fileName = System.IO.Path.GetFileName(filePath);
+                            StreamWriter streamWriter = new StreamWriter(stream);
+                            await streamWriter.WriteLineAsync(fileName);
+                            await streamWriter.FlushAsync();
+
+                            using (FileStream fileStream = File.OpenRead(filePath))
                             {
-                                string fileName = System.IO.Path.GetFileName(filePath);
-                                StreamWriter streamWriter = new StreamWriter(stream);
-                                await streamWriter.WriteLineAsync(fileName);
-                                await streamWriter.FlushAsync();
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+                                long totalBytesSent = 0;
 
-                                using (FileStream fileStream = File.OpenRead(filePath))
+                                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
                                 {
-                                    byte[] buffer = new byte[1024];
-                                    int bytesRead;
-                                    long totalBytesSent = 0;
+                                    await stream.WriteAsync(buffer, 0, bytesRead);
+                                    totalBytesSent += bytesRead;
 
-                                    while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                                    double progress = (double)totalBytesSent / fileStream.Length * 100;
+                                    Dispatcher.Invoke(() =>
                                     {
-                                        await stream.WriteAsync(buffer, 0, bytesRead);
-                                        totalBytesSent += bytesRead;
-
-                                        double progress = (double)totalBytesSent / fileStream.Length * 100;
-                                        Dispatcher.Invoke(() =>
-                                        {
-                                            ProgressBar.Value = progress;
-                                        });
-                                    }
-
+                                        ProgressBar.Value = progress;
+                                    });
                                 }
+
                             }
+                        }
                         catch (Exception ex)
                         {
                             System.Windows.Forms.MessageBox.Show(ex.ToString());
                         }
-                }
-
-                        Dispatcher.Invoke(() =>
-                        {
-                            if(ProgressBar.Value ==100)
-                            {
-                                 ProgressTextBlock.Text = "File sent successfully.";
-
-                            }
-                            else
-                            {
-                                ProgressTextBlock.Text = "Some error occured";
-                            }
-                        });
                     }
+
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (ProgressBar.Value == 100)
+                        {
+                            ProgressTextBlock.Text = "File sent successfully.";
+
+                        }
+                        ProgressTextBlock.Text = "Some error occured";
+                    });
+                }
                 catch (Exception ex)
                 {
                     System.Windows.Forms.MessageBox.Show(ex.ToString());
@@ -133,18 +130,21 @@ namespace FTS_sender_
         {
             OpenFileDialog op = new OpenFileDialog
             {
-                Multiselect = true, 
+                Multiselect = true,
                 Filter = "All Files|*.*",
                 Title = "Select Files"
             };
 
             if (op.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+
                 string[] fileNames = op.FileNames;
+
+
                 path.Text = string.Join(Environment.NewLine, fileNames);
             }
-        }
 
+        }
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
@@ -187,7 +187,7 @@ namespace FTS_sender_
         int flag = 0;
         private void ipAddress_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(flag==0)
+            if (flag == 0)
             {
                 ipAddress.Text = "";
             }
