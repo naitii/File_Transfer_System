@@ -33,7 +33,6 @@ namespace FTS_receiver_
             path.Visibility = (Visibility)0x64;
             ip.Visibility = (Visibility)0x64;
             ProgressTextBlock.Visibility = (Visibility)0x64;
-            recieve.Visibility = (Visibility)0x64;
             listener = new TcpListener(IPAddress.Any, 12345);
             listener.Start();
 
@@ -54,54 +53,50 @@ namespace FTS_receiver_
                 path.Text = savePath;
             }
         }
+
         private async void StartListening()
         {
+            while (true)
             {
-                while (true)
+                try
                 {
                     TcpClient client = await listener.AcceptTcpClientAsync();
                     Dispatcher.Invoke(() => ProgressTextBlock.Text = "Connected to sender...");
-                    try
+
+                    using (NetworkStream stream = client.GetStream())
                     {
-                        using (NetworkStream stream = client.GetStream())
+                        byte[] fileNameBytes = new byte[1024];
+                        int fileNameBytesRead = await stream.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
+                        string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
+
+                        string filePath = System.IO.Path.Combine(savePath, fileName);
+
+                        using (FileStream fileStream = File.Create(filePath))
                         {
-                            byte[] fileNameBytes = new byte[1024];
-                            int fileNameBytesRead = await stream.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
-                            string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
+                            byte[] buffer = new byte[1024];
+                            int bytesRead;
+                            long totalBytesReceived = 0;
 
-                            string filePath = System.IO.Path.Combine(savePath, fileName);
-
-                            using (FileStream fileStream = File.Create(filePath))
+                            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                             {
-                                byte[] buffer = new byte[1024];
-                                int bytesRead;
-                                long totalBytesReceived = 0;
+                                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                                totalBytesReceived += bytesRead;
 
-                                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                                {
-                                    await fileStream.WriteAsync(buffer, 0, bytesRead);
-                                    totalBytesReceived += bytesRead;
-
-                                    double progress = (double)totalBytesReceived / fileStream.Length * 100;
-                                    Dispatcher.Invoke(() => ProgressBar.Value = progress);
-                                }
+                                double progress = (double)totalBytesReceived / fileStream.Length * 100;
+                                Dispatcher.Invoke(() => ProgressBar.Value = progress);
                             }
-
-                            Dispatcher.Invoke(() => ProgressTextBlock.Text = $"Received file: {fileName}");
                         }
 
+                        Dispatcher.Invoke(() => ProgressTextBlock.Text = $"Received file: {fileName}");
                     }
-                    catch(Exception ex) {
-                        System.Windows.Forms.MessageBox.Show(ex.ToString());
-                    }
-
 
                     client.Close();
                 }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.ToString());
+                }
             }
-           
-            
-
         }
 
         private string GetLocalIPAddress()
@@ -119,6 +114,7 @@ namespace FTS_receiver_
 
             return "IP address not found";
         }
+
         private void login_Click(object sender, RoutedEventArgs e)
         {
             string emailAddress = emailBox.Text.Trim();
@@ -129,7 +125,7 @@ namespace FTS_receiver_
                 string domain = mailAddress.Host;
                 if (!domain.Contains("iitr.ac.in"))
                 {
-                    System.Windows.Forms.MessageBox.Show("Sorry this Software is available for IIT Roorkee students only");
+                    System.Windows.Forms.MessageBox.Show("Sorry, this Software is available for IIT Roorkee students only");
                 }
                 else
                 {
@@ -138,10 +134,13 @@ namespace FTS_receiver_
                     path.Visibility = 0;
                     ip.Visibility = 0;
                     ProgressTextBlock.Visibility = 0;
-                    recieve.Visibility = 0;
+                    
                     label1.Visibility = (Visibility)0x64;
                     login.Visibility = (Visibility)0x64;
                     emailBox.Visibility = (Visibility)0x64;
+
+                    StartListening();
+                    ProgressTextBlock.Text = "Waiting For Sender.....";
                 }
 
             }
@@ -151,10 +150,6 @@ namespace FTS_receiver_
             }
         }
 
-        private void recieve_Click(object sender, RoutedEventArgs e)
-        {
-            StartListening();
-
-        }
+        
     }
 }
