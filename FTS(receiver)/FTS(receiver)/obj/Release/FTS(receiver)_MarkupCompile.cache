@@ -4,11 +4,11 @@
 winexe
 C#
 .cs
-C:\Users\panch\source\repos\FTS\FTS(receiver)\FTS(receiver)\obj\Debug\
+C:\Users\panch\source\repos\FTS\FTS(receiver)\FTS(receiver)\obj\Release\
 FTS_receiver_
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\panch\source\repos\FTS\FTS(receiver)\FTS(receiver)\App.xaml
 1219584333
 
@@ -16,5 +16,5 @@ C:\Users\panch\source\repos\FTS\FTS(receiver)\FTS(receiver)\App.xaml
 15-792696235
 MainWindow.xaml;
 
-False
+True
 
