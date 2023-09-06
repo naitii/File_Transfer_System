@@ -22,7 +22,7 @@ using System.Drawing;
 using System.Net.Sockets;
 using System.Net;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
+using System.Threading;
 
 namespace FTS_sender_
 {
@@ -57,10 +57,12 @@ namespace FTS_sender_
                 {
                     await client.ConnectAsync(serverIp, serverPort);
                     ProgressTextBlock.Text = "Connected to reciever...";
+                    Thread.Sleep(2000);
                 }
                 catch
                 {
-                    System.Windows.Forms.MessageBox.Show("Couldn't Connect\n to Server ");
+                    System.Windows.Forms.MessageBox.Show("Couldn't Connect to the Server ");
+
                 }
                 using (NetworkStream stream = client.GetStream())
                     {
@@ -159,6 +161,29 @@ namespace FTS_sender_
             catch (FormatException)
             {
                 System.Windows.Forms.MessageBox.Show("Invalid email address format.");
+            }
+        }
+
+        private void ipAddress_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+        int flag = 0;
+        private void ipAddress_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(flag==0)
+            {
+                ipAddress.Text = "";
+            }
+
+        }
+
+        private void ipAddress_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (flag == 0)
+            {
+                ipAddress.Text = "";
+                flag = 1;
             }
         }
     }
