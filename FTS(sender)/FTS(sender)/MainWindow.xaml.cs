@@ -113,7 +113,10 @@ namespace FTS_sender_
                                  ProgressTextBlock.Text = "File sent successfully.";
 
                             }
-                            ProgressTextBlock.Text = "Some error occured";
+                            else
+                            {
+                                ProgressTextBlock.Text = "Some error occured";
+                            }
                         });
                     }
                 catch (Exception ex)
@@ -130,21 +133,18 @@ namespace FTS_sender_
         {
             OpenFileDialog op = new OpenFileDialog
             {
-                Multiselect = true,
+                Multiselect = true, 
                 Filter = "All Files|*.*",
                 Title = "Select Files"
             };
 
             if (op.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-
                 string[] fileNames = op.FileNames;
-
-
                 path.Text = string.Join(Environment.NewLine, fileNames);
             }
-
         }
+
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
