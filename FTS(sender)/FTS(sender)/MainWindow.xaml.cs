@@ -23,6 +23,7 @@ using System.Net.Sockets;
 using System.Net;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Threading;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FTS_sender_
 {
@@ -44,6 +45,7 @@ namespace FTS_sender_
             path.Visibility = (Visibility)0x64;
             ProgressBar.Visibility = (Visibility)0x64;
             ProgressTextBlock.Visibility = (Visibility)0x64;
+            
             ipAddress.Visibility = (Visibility)0x64;
         }
 
@@ -57,55 +59,69 @@ namespace FTS_sender_
                 {
                     await client.ConnectAsync(serverIp, serverPort);
                     ProgressTextBlock.Text = "Connected to reciever...";
-                    Thread.Sleep(2000);
+
                 }
                 catch
                 {
                     System.Windows.Forms.MessageBox.Show("Couldn't Connect to the Server ");
+                    
 
                 }
-                using (NetworkStream stream = client.GetStream())
-                    {
-                        filePath += path.Text;
-                        try
+                try
+                {
+
+                    using (NetworkStream stream = client.GetStream())
                         {
-                            string fileName = System.IO.Path.GetFileName(filePath);
-                            StreamWriter streamWriter = new StreamWriter(stream);
-                            await streamWriter.WriteLineAsync(fileName);
-                            await streamWriter.FlushAsync();
-
-                            using (FileStream fileStream = File.OpenRead(filePath))
+                            filePath += path.Text;
+                            try
                             {
-                                byte[] buffer = new byte[1024];
-                                int bytesRead;
-                                long totalBytesSent = 0;
+                                string fileName = System.IO.Path.GetFileName(filePath);
+                                StreamWriter streamWriter = new StreamWriter(stream);
+                                await streamWriter.WriteLineAsync(fileName);
+                                await streamWriter.FlushAsync();
 
-                                while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
+                                using (FileStream fileStream = File.OpenRead(filePath))
                                 {
-                                    await stream.WriteAsync(buffer, 0, bytesRead);
-                                    totalBytesSent += bytesRead;
+                                    byte[] buffer = new byte[1024];
+                                    int bytesRead;
+                                    long totalBytesSent = 0;
 
-                                    double progress = (double)totalBytesSent / fileStream.Length * 100;
-                                    Dispatcher.Invoke(() =>
+                                    while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) > 0)
                                     {
-                                        ProgressBar.Value = progress;
-                                    });
-                                }
+                                        await stream.WriteAsync(buffer, 0, bytesRead);
+                                        totalBytesSent += bytesRead;
 
+                                        double progress = (double)totalBytesSent / fileStream.Length * 100;
+                                        Dispatcher.Invoke(() =>
+                                        {
+                                            ProgressBar.Value = progress;
+                                        });
+                                    }
+
+                                }
                             }
-                        }
                         catch (Exception ex)
                         {
                             System.Windows.Forms.MessageBox.Show(ex.ToString());
                         }
+                }
 
                         Dispatcher.Invoke(() =>
                         {
-                            ProgressTextBlock.Text = "File sent successfully.";
+                            if(ProgressBar.Value ==100)
+                            {
+                                 ProgressTextBlock.Text = "File sent successfully.";
+
+                            }
+                            ProgressTextBlock.Text = "Some error occured";
                         });
                     }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.ToString());
+                }
 
-                
+
 
             }
         }
