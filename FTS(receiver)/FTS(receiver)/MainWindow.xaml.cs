@@ -61,33 +61,40 @@ namespace FTS_receiver_
                 {
                     TcpClient client = await listener.AcceptTcpClientAsync();
                     Dispatcher.Invoke(() => ProgressTextBlock.Text = "Connected to sender...");
-
-                    using (NetworkStream stream = client.GetStream())
+                    try
                     {
-                        byte[] fileNameBytes = new byte[1024];
-                        int fileNameBytesRead = await stream.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
-                        string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
-
-                        string filePath = System.IO.Path.Combine(savePath, fileName);
-
-                        using (FileStream fileStream = File.Create(filePath))
+                        using (NetworkStream stream = client.GetStream())
                         {
-                            byte[] buffer = new byte[1024];
-                            int bytesRead;
-                            long totalBytesReceived = 0;
+                            byte[] fileNameBytes = new byte[1024];
+                            int fileNameBytesRead = await stream.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
+                            string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
 
-                            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            string filePath = System.IO.Path.Combine(savePath, fileName);
+
+                            using (FileStream fileStream = File.Create(filePath))
                             {
-                                await fileStream.WriteAsync(buffer, 0, bytesRead);
-                                totalBytesReceived += bytesRead;
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+                                long totalBytesReceived = 0;
 
-                                double progress = (double)totalBytesReceived / fileStream.Length * 100;
-                                Dispatcher.Invoke(() => ProgressBar.Value = progress);
+                                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    await fileStream.WriteAsync(buffer, 0, bytesRead);
+                                    totalBytesReceived += bytesRead;
+
+                                    double progress = (double)totalBytesReceived / fileStream.Length * 100;
+                                    Dispatcher.Invoke(() => ProgressBar.Value = progress);
+                                }
                             }
+
+                            Dispatcher.Invoke(() => ProgressTextBlock.Text = $"Received file: {fileName}");
                         }
 
-                        Dispatcher.Invoke(() => ProgressTextBlock.Text = $"Received file: {fileName}");
                     }
+                    catch(Exception ex) {
+                        System.Windows.Forms.MessageBox.Show(ex.ToString());
+                    }
+
 
                     client.Close();
                 }
@@ -95,43 +102,6 @@ namespace FTS_receiver_
            
             
 
-        }
-
-        private async Task HandleClientAsync(TcpClient client)
-        {
-            using (NetworkStream stream = client.GetStream())
-            {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-
-                byte[] fileNameBytes = new byte[1024];
-                int fileNameBytesRead = await stream.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
-                string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
-
-                string filePath = System.IO.Path.Combine(savePath, fileName);
-
-                using (FileStream fileStream = File.Create(filePath))
-                {
-                    long totalBytesReceived = 0;
-
-                    while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                    {
-                        await fileStream.WriteAsync(buffer, 0, bytesRead);
-                        totalBytesReceived += bytesRead;
-
-                        Dispatcher.Invoke(() =>
-                        {
-                            double progress = (double)totalBytesReceived / fileStream.Length * 100;
-                            ProgressBar.Value = progress;
-                        });
-                    }
-                }
-
-                Dispatcher.Invoke(() =>
-                {
-                    ProgressTextBlock.Text = $"Received file: {fileName}";
-                });
-            }
         }
 
         private string GetLocalIPAddress()
