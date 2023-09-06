@@ -61,6 +61,10 @@ namespace FTS_receiver_
                         int fileNameBytesRead = await stream.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
                         string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
 
+
+                        fileName = string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()))
+                            .Replace("__", "_");
+
                         string filePath = System.IO.Path.Combine(savePath, fileName);
                         using (FileStream fileStream = File.Create(filePath))
                         {
@@ -89,6 +93,7 @@ namespace FTS_receiver_
                 }
             }
         }
+
 
         private string GetLocalIPAddress()
         {
