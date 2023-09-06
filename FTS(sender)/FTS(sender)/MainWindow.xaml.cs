@@ -32,7 +32,7 @@ namespace FTS_sender_
     public partial class MainWindow : System.Windows.Window
     {
 
-        private string serverIp = "Server_IP_Address";
+        private string serverIp = "";
         private int serverPort = 12345;
         private string filePath = "";
         string s;
@@ -57,7 +57,12 @@ namespace FTS_sender_
                 {
                     await client.ConnectAsync(serverIp, serverPort);
                     ProgressTextBlock.Text = "Connected to reciever...";
-                    using (NetworkStream stream = client.GetStream())
+                }
+                catch
+                {
+                    System.Windows.Forms.MessageBox.Show("Couldn't Connect\n to Server ");
+                }
+                using (NetworkStream stream = client.GetStream())
                     {
                         filePath += path.Text;
                         try
@@ -98,10 +103,7 @@ namespace FTS_sender_
                         });
                     }
 
-                }
-                catch {
-                    System.Windows.Forms.MessageBox.Show("Couldn't Connect\n to Server ");
-                }
+                
 
             }
         }
