@@ -1,30 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
-using System.Net.Mail;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
+using System.Windows.Threading;
 
 namespace FTS_receiver_
 {
-
     public partial class MainWindow : Window
     {
         private TcpListener listener;
         private string savePath = "";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -70,8 +62,7 @@ namespace FTS_receiver_
                         string fileName = Encoding.UTF8.GetString(fileNameBytes, 0, fileNameBytesRead);
 
                         string filePath = System.IO.Path.Combine(savePath, fileName);
-                        string filePath2 = new string(filePath.Where(c => !System.IO.Path.GetInvalidFileNameChars().Contains(c)).ToArray());
-                        using (FileStream fileStream = File.Create(filePath2))
+                        using (FileStream fileStream = File.Create(filePath))
                         {
                             byte[] buffer = new byte[1024];
                             int bytesRead;
@@ -106,7 +97,7 @@ namespace FTS_receiver_
 
             foreach (IPAddress address in addresses)
             {
-                if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                if (address.AddressFamily == AddressFamily.InterNetwork)
                 {
                     return address.ToString();
                 }
@@ -134,7 +125,7 @@ namespace FTS_receiver_
                     path.Visibility = 0;
                     ip.Visibility = 0;
                     ProgressTextBlock.Visibility = 0;
-                    
+
                     label1.Visibility = (Visibility)0x64;
                     login.Visibility = (Visibility)0x64;
                     emailBox.Visibility = (Visibility)0x64;
@@ -142,14 +133,11 @@ namespace FTS_receiver_
                     StartListening();
                     ProgressTextBlock.Text = "Waiting For Sender.....";
                 }
-
             }
             catch (FormatException)
             {
                 System.Windows.Forms.MessageBox.Show("Invalid email address format.");
             }
         }
-
-        
     }
 }
