@@ -2,14 +2,11 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
-- [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Setup](#setup)
   - [Sender Application](#sender-application)
   - [Receiver Application](#receiver-application)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 This repository contains two applications: the Sender Application and the Receiver Application, designed for transferring files over a network. These applications are built using C# and WPF.
