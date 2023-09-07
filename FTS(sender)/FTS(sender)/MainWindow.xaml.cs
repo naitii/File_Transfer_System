@@ -36,6 +36,8 @@ namespace FTS_sender_
         private string serverIp = "";
         private int serverPort = 12345;
         private string filePath = "";
+
+
         public MainWindow()
         {
             InitializeComponent();
