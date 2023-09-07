@@ -12,7 +12,7 @@
 This repository contains two applications: the Sender Application and the Receiver Application, designed for transferring files over a network. These applications are built using C# and WPF.
 
 ## Prerequisites
-NOTE: This is for only those who want to contribute to the project.
+NOTE: This section is for only those who want to contribute to this project.
 
 Before setting up the sender and receiver applications, ensure you have **.NET Framework**: Since Both applications are built using .NET Framework.
 
