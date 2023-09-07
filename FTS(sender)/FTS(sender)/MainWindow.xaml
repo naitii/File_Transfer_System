@@ -15,7 +15,7 @@
         <Button x:Name="browse" Content="Select Files to Send" HorizontalAlignment="Left" Height="28" Margin="515,143,0,0" VerticalAlignment="Top" Width="173" FontFamily="Arial" FontSize="16" Click="browse_Click" RenderTransformOrigin="1,0.5"/>
         <TextBox x:Name="path" HorizontalAlignment="Left" Height="28" Margin="91,143,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="376" FontFamily="Arial" FontSize="14" RenderTransformOrigin="1,0.5"/>
         <Button x:Name="Transfer" Content="SEND FILES" HorizontalAlignment="Left" Height="31" Margin="284,266,0,0" VerticalAlignment="Top" Width="183" Click="search_Click" RenderTransformOrigin="1,0.5" FontFamily="Arial" FontWeight="Bold" FontSize="14"/>
-        <TextBox x:Name="ipAddress" HorizontalAlignment="Left" Height="24" Margin="207,63,0,0" TextWrapping="Wrap" Text="Write IP Address of Receiver" VerticalAlignment="Top" Width="193" MouseLeftButtonDown="ipAddress_MouseLeftButtonDown" MouseDoubleClick="ipAddress_MouseDoubleClick" RenderTransformOrigin="1,0.5" FontFamily="Arial" FontSize="14" FontStyle="Italic"/>
+        <TextBox x:Name="ipAddress" HorizontalAlignment="Left" Height="24" Margin="207,63,0,0" TextWrapping="Wrap" Text="Write IP Address of Receiver" VerticalAlignment="Top" Width="193" MouseDoubleClick="ipAddress_MouseDoubleClick" RenderTransformOrigin="1,0.5" FontFamily="Arial" FontSize="14" FontStyle="Italic"/>
         <TextBlock x:Name="ProgressTextBlock" HorizontalAlignment="Left" Height="26" Margin="66,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" RenderTransformOrigin="1,0.5"/>
         <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="20" Margin="59,343,0,0" VerticalAlignment="Top" Width="629" RenderTransformOrigin="1,0.5"/>
     </Grid>
