@@ -36,7 +36,6 @@ namespace FTS_sender_
         private string serverIp = "";
         private int serverPort = 12345;
         private string filePath = "";
-        string s;
         public MainWindow()
         {
             InitializeComponent();
@@ -65,7 +64,7 @@ namespace FTS_sender_
                 {
                     System.Windows.Forms.MessageBox.Show("Couldn't Connect to the Server ");
 
-
+                    return;
                 }
                 try
                 {
@@ -116,6 +115,7 @@ namespace FTS_sender_
                         ProgressTextBlock.Text = "Some error occured";
                     });
                 }
+
                 catch (Exception ex)
                 {
                     System.Windows.Forms.MessageBox.Show(ex.ToString());
@@ -180,19 +180,8 @@ namespace FTS_sender_
             }
         }
 
-        private void ipAddress_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
         int flag = 0;
-        private void ipAddress_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (flag == 0)
-            {
-                ipAddress.Text = "";
-            }
-
-        }
 
         private void ipAddress_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

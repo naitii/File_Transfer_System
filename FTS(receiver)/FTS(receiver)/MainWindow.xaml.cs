@@ -63,22 +63,10 @@ namespace FTS_receiver_
 
 
                         fileName = string.Join("_", fileName.Split(Path.GetInvalidFileNameChars()));
-                        int fl = 0;
-                        for(int i= fileName.Length-1; i>=0; i--)
-                        {
-                            if (fileName[i] == '_' && fl == 0)
-                            {
-                                fileName = fileName.Remove(i, 1); 
-                                fl = 1;
-                            }
-
-                            else
-                            {
-                                break;
-                            }
-                        }
-
-                        string filePath = System.IO.Path.Combine(savePath, fileName);
+                 
+                        string fileName2 = fileName.Remove(fileName.Length - 2);
+                        string filePath = System.IO.Path.Combine(savePath, fileName2);
+                        ProgressTextBlock.Text = filePath;
                         using (FileStream fileStream = File.Create(filePath))
                         {
                             byte[] buffer = new byte[1024];
@@ -95,7 +83,7 @@ namespace FTS_receiver_
                             }
                         }
 
-                        Dispatcher.Invoke(() => ProgressTextBlock.Text = $"Received file: {fileName}");
+                        Dispatcher.Invoke(() => ProgressTextBlock.Text = $"Received file: {fileName2}");
                     }
 
                     client.Close();
