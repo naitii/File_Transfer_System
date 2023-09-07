@@ -22,7 +22,7 @@ Follow these steps to set up the Sender and Receiver Applications.
 Clone or download this repository to your local machine.
 
 ### Sender Application
-1. Open the Sender Application project by going to File_Transfer_System\FTS(sender)\
+1. Open the Sender Application project by going to File_Transfer_System\FTS(sender)\FTS(sender)\bin\Debug
 
 2. Run the FTS(sender).exe.
 
@@ -36,7 +36,7 @@ Clone or download this repository to your local machine.
 
 ### Receiver Application
 
-1. Open the Receiver Application project by going to File_Transfer_System\FTS(receiver)\
+1. Open the Receiver Application project by going to File_Transfer_System\FTS(receiver)\FTS(receiver)\bin\Debug
 
 2. Run the FTS(receiver).exe.
 3. Login by writing your institute email ID.
@@ -50,7 +50,7 @@ Clone or download this repository to your local machine.
 
 2. In the Sender Application, enter the IP address of the receiver's machine.
 
-3. Select the file to send. NOTE: Make sure that file you are sending doesn't contains any illegal characters such as spaces.
+3. Select the file to send. NOTE: Make sure that file name you are sending doesn't contain any illegal characters such as spaces.
 
 4. Click the "Transfer" button to initiate the file transfer.
 
