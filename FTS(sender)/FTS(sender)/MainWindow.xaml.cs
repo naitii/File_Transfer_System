@@ -112,7 +112,10 @@ namespace FTS_sender_
                             ProgressTextBlock.Text = "File sent successfully.";
 
                         }
-                        ProgressTextBlock.Text = "Some error occured";
+                        else
+                        {
+                            ProgressTextBlock.Text = "Some error occured";
+                        }
                     });
                 }
 
