@@ -28,7 +28,7 @@ Clone or download this repository to your local machine.
 
 3. Login by writing your institute email ID.
 
-4. Enter the IP address of the receiver's machine in the "IP Address" field.
+4. Enter the IP address of the receiver's machine in the "IP Address" field by **double clicking** on it.
 
 5. Click the "SELECT FILES TO SEND" button to select files for transfer.
 
